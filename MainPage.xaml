@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WOWStore.MainPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            IconImageSource="favorites_icon.svg"
+            Command="{Binding OpenFavouritesCommand}"
+            />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+       
+         <Grid
+            x:Name="Filter"
+            HeightRequest="40"
+            Margin="16,8,16,0"
+            RowDefinitions ="Auto,Auto"
+            ColumnDefinitions="1*,1*">
+
+            <HorizontalStackLayout
+                Grid.Row="0"
+                Grid.Column="0">
+
+                <ImageButton
+                    Source="filter.svg"
+                    Aspect="Center"
+                    HorizontalOptions="Start"
+                    HeightRequest="16"
+                    WidthRequest="16"/>
+
+                <Label
+                    Text="Filter"
+                    FontSize="18"
+                    VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+
+            <HorizontalStackLayout
+                Grid.Column="1"
+                Grid.Row="0"
+                Spacing="12"
+                HorizontalOptions="End">
+
+                <ImageButton
+                    x:Name="GridSelection"
+                    Style="{StaticResource CustomImageButtonStyle}"
+                    Source="{Binding GridImageSource}"
+                    Command="{Binding GridSelectionCommand}"
+                    HeightRequest="32"
+                    WidthRequest="32"
+                    IsEnabled="{Binding GridSelectionIsVisible}"
+                    Aspect="Center"/>
+
+                 <ImageButton
+                    x:Name="ListSelection"
+                    Style="{StaticResource CustomImageButtonStyle}"
+                    Source="{Binding ListImageSource}"
+                    Command="{Binding ListSelectionCommand}"
+                    IsEnabled="{Binding ListSelectionIsVisible}"
+                    HeightRequest="32"
+                    WidthRequest="32"
+                    Aspect="Center"/>
+            </HorizontalStackLayout>
+
+            <BoxView
+                Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     HeightRequest="1"
+                     Margin="0,8,0,0"
+                     Color="#E5EBE9"/>
+            </Grid>
+
+        <ActivityIndicator x:Name="LoadingIndicator"
+                       IsRunning="{Binding IsLoading}"
+                       IsVisible="{Binding IsLoading}"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="CenterAndExpand" />
+   
+        <RefreshView
+            x:Name="ProdLV"
+            Command="{Binding RefreshListCommand}"
+            IsRefreshing="{Binding IsLoading}"
+            Margin="16,2,16,16"
+            IsVisible="{Binding ListIsVisible}">
+
+            <CollectionView
+                ItemsSource="{Binding Products}"
+                
+                SelectionMode="Single"
+                SelectionChanged="OnItemSelected">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="{Binding ColumnGridSpan}" />
+                </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                         x:Name="ProductsGrid">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,24,0,0"
+                            Source="{Binding Main_image}"
+                            Aspect="AspectFit"
+                            HeightRequest="88"
+                            WidthRequest="120" />
+
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            RowDefinitions="Auto,Auto,Auto"
+                            ColumnDefinitions="*">
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,20,0,0"
+                                    Text="{Binding Name}"
+                                    TextColor="{StaticResource BlueApp}"
+                                    FontSize="Title"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
+                                    FontAttributes="Bold"
+                                    VerticalOptions="Start"/>
+                       
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,8,0,8"
+                                    Text="{Binding Details}"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="12"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start"/>
+
+                                <Grid
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    ColumnDefinitions="Auto,Auto,Auto,Auto,Auto"
+                                    VerticalOptions="End">
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        TextColor="{StaticResource BlueApp}"
+                                        FontSize="16"
+                                        Text="$ "
+                                        VerticalOptions="End"/>
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        TextColor="{StaticResource BlueApp}"
+                                        FontSize="16"
+                                        Text="{Binding Price}"
+                                        VerticalOptions="End"/>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="3"
+                                        Opacity="0.4"
+                                        FontSize="12"
+                                        Padding="5,0,0,0"
+                                        Text="$ "
+                                        VerticalOptions="Center"/>
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="4"
+                                        TextColor="{StaticResource BlueApp}"
+                                        Opacity="0.4"
+                                        FontSize="12"
+                                        Text="{Binding Price}"
+                                        VerticalOptions="Center"/>
+
+                                </Grid>
+                            </Grid>
+                        
+                        
+                        
+                        <Frame
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            CornerRadius="16"
+                            HasShadow="True"
+                            HeightRequest="32"
+                            WidthRequest="32"
+                            Margin="0,16,0,0"
+                            HorizontalOptions="Start">
+
+                            <ImageButton
+                                x:Name="FavouriteBtn"
+                                Style="{StaticResource CustomFavoriteImageButtonStyle}"
+                                Source="{Binding FavoriteImage}"
+                                Command="{Binding SetFavoriteCommand}"
+                                HeightRequest="32"
+                                WidthRequest="32"
+                                Aspect="Center"/>
+                        </Frame>
+
+                        <Frame
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="48,16,0,0"
+                            CornerRadius="16"
+                            HasShadow="True"
+                            HeightRequest="32"
+                            WidthRequest="32"
+                            HorizontalOptions="Start">
+
+                            <ImageButton
+                                x:Name="CartBtn"
+                                Style="{StaticResource CustomFavoriteImageButtonStyle}"
+                                BackgroundColor="{Binding CartImageColor}"
+                                Source="{Binding CartImage}"
+                                Command="{Binding AddToCartCommand}"
+                                HeightRequest="32"
+                                WidthRequest="32"
+                                Aspect="Center"/>
+                        </Frame>
+
+                        <BoxView
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            HeightRequest="1"
+                            Margin="0,16,0,0"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="End"
+                            Color="#E5EBE9"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            </CollectionView>
+      </RefreshView>
+
+        <!--<Button
+            x:Name="MyCartBtn"
+            Text="MY CART"
+           />-->
+
+    </StackLayout>
+</ContentPage>
+
