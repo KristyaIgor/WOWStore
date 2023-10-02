@@ -59,6 +59,7 @@ public partial class Product : ObservableObject
 
         if (isFavorite)
         {
+            ///xcszcdasfdzf
             FavoriteImage = "heart_selected.svg";
         }
         else
